@@ -1,0 +1,54 @@
+{% load static %}
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+    <title>Create Job</title>
+    <link rel="shortcut icon" type="image/ico" href="{% static 'favicon.ico' %}"/>
+    <link rel="stylesheet" href="{% static 'jobs/settings_style.css' %}">
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="app">
+        <h1>Create a New Job</h1>
+        <div class="form">
+            <form action="{% url 'jobs:saveJob' customer.id %}" method="post" id="parent">
+                {% csrf_token %}
+                <div class="form-input number">
+                    <label for="price">Price:</label><br>
+                    <input type="number" size="10" name="price" id="price" step="0.01">
+                </div>
+                <div class="form-input text">
+                    <label for="address">Address:</label><br>
+                    <input type="text" size="50" name="address" id="address">
+                </div>
+                <div class="form-input number">
+                    <label for="zipCode">Zip Code:</label><br>
+                    <input type="number" size="5" name="zipCode" id="zipCode">
+                </div>
+                <div class="form-input text">
+                    <label for="time">Time:</label><br>
+                    <input type="datetime-local" name="time" id="time">
+                </div>
+                <div class="form-input options">
+                    <label for="type">Type:</label><br>
+                    <select name="type" id="type">
+                        {% for jobType in jobTypes %}
+                        <option value="{{ jobType.jobType }}">{{ jobType.jobType }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <p style="color:red">{{ error }} </p>
+                <!-- <div class="form-input">
+                    <input type="checkbox" name="recurring" id="recurring">
+                    <label for="recurring">Recurring</label>
+                </div> -->
+                <div class="submit-button-div">
+                    <input type="submit" name="submit" value="Submit" id="submit" class="submit">
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

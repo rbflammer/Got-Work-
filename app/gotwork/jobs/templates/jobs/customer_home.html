@@ -1,0 +1,128 @@
+{% load static %}
+
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>Customer Home</title>
+    <link rel="shortcut icon" type="image/ico" href="{% static 'favicon.ico' %}"/>
+    <link rel="stylesheet" href="{% static 'jobs/user_home_style.css' %}">
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div class="topbar">
+            <span id="profile-icon">
+                O-|-<
+            </span>
+            <span id="profile-name">
+                {{ customer.first_name }} {{ customer.last_name }}
+            </span>
+            <form action="{% url 'jobs:logout' %}" method="post">
+                {% csrf_token %}
+                <input type="submit" class="logout-button" name="logout" id="logout" value="Logout">
+            </form>
+            <form action="{% url 'jobs:customerSettings' customer.id %}" method="get">
+                <input type="submit" class="settings-button" name="customersettings" 
+                    id="settings-button" value="Profile Settings" onclick="profileSettings(this)">
+            </form>
+            <form action="{% url 'jobs:createJob' customer.id %}" method="get">
+                <input type="submit" class="create-job-button" id="create-job-button"
+                value="Create New Job" name="createjob">
+            </form>
+        </div>
+
+        <div class="sidebar">
+            <h2>Account info:</h2>
+            <p>Current Funds: {{ customer.balance|floatformat:2 }}</p>
+        </div>
+        
+        <div class="main">
+            <div class="finished-jobs">
+                <h2>Finished Jobs</h2>
+                {% for job in finished_jobs %}
+                    <div class="job-detail">
+                        <p>Type: {{ job.jobType }}</p>
+                        <p onclick="showAddress(this)"> Location: {{ job.zipCode }}</p>
+                        <p>Pay: ${{ job.price|floatformat:2 }}</p>
+                        <p>Worker: {{ job.worker }}</p>
+                        <p>Worker Contact: {{ job.worker.contact }}</p>
+                        <p>Status: {{ job.status }}</p>
+                        <p>Date: {{ job.getDueDatePretty }}</p>
+                        <!-- This is the button to review a finished job. Once they click this, it will go away. 
+                            If you choose to do front end, simply edit this. If you choose back-end implementation, wrap this in a <form> :)-->
+                        <input type="button" name="review" id="review-button" class="review-button" value="Review Job" @click="showPopup()">
+                    </div>
+                    <div id="modal" class="modal">
+                        <div class="modal-content">
+                            <span class="close" @click="closePopup()">&times;</span>
+                            <form action="{% url 'jobs:reviewWorker' job.id %}" method="post" style="border:initial;" id="parent">
+                            {% csrf_token %}
+                                <p style="font-size: 20px;">Did the worker do a good job?</p>
+                                <label class="thumbs-up" @click="removeRefundRequest()">
+                                    <input type="radio" name="review" value="up" required>
+                                    <span class="thumbs">👍</span>
+                                </label>
+                                <label class="thumbs-down" @click="addRefundRequest()">
+                                    <input type="radio" name="review" value="down" required>
+                                    <span class="thumbs">👎</span>
+                                </label>
+
+                                <br id="break">
+                                <input type="submit" name="finishedreview" class="job-button" id="finishedreview" value="Submit"/>
+                            </form>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="job-detail">
+                        <p>You don't have any unreviewed finished jobs at the moment.</p>
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <div class="current-jobs">
+                <h2>Active Jobs:</h2>
+                <!--loop each current job-->
+                {% for job in active_jobs %}
+                    <div class="job-detail">
+                        <p>Type: {{ job.jobType }}</p>
+                        <p onclick="showAddress(this)"> Location: {{ job.zipCode }}</p>
+                        <p>Pay: ${{ job.price|floatformat:2 }}</p>
+                        <p>Worker: {{ job.worker }}</p>
+                        <p>Worker Contact: {{ job.worker.contact }}</p>
+                        <p>Status: {{ job.status }}</p>
+                        <p>Date: {{ job.getDueDatePretty }}</p>
+                    </div>
+                {% empty %}
+                    <div class="job-detail">
+                        <p>You don't have any active jobs at the moment.</p>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="available-jobs">
+                <h2>Available Jobs:</h2>
+                {% for job in pending_jobs %}
+                    <div class="job-detail">
+                        <form action="{% url 'jobs:deleteJob' job.id %}" method="post">
+                            {% csrf_token %}
+                            <p>Type: {{ job.jobType }}</p> 
+                            <p onclick="showAddress(this)">Location: {{ job.customer.zipCode }}</p>
+                            <p>Pay: ${{ job.price|floatformat:2 }}</p> 
+                            <p>Status: {{ job.status }}</p>
+                            <p>Date: {{ job.getDueDatePretty }}</p>
+                            <input type="submit" name="delete" class="job-button"
+                            id="delete-button" value="Delete Job" onclick="deleteJob(this)">
+                        </form>
+                    </div>
+                {% empty %}
+                <div class="job-detail">
+                    <p>You don't have any pending jobs. Feel free to create one!</p>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+    <script type="text/javascript" src="{% static 'jobs/js/customer_home.js' %}"></script>
+</body>
+<html>

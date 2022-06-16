@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <link rel="stylesheet" href="{% static 'jobs/generic_sign_up_style.css' %}" type="text/css" >
+        <title>Customer Sign Up</title>
+        <link rel="shortcut icon" type="image/ico" href="{% static 'favicon.ico' %}"/>
+    </head>
+
+    <body class="background">
+    <script src="{% static 'jobs/js/customer_sign_up.js' %}"></script>
+        <header class="header">
+            <h1 class="please-enter">Enter your information below: </h1>
+        </header>
+
+    <form action="{% url 'jobs:postCustomer' %}" method="post">
+        {% csrf_token %}
+            <div class="inputs">
+                <div class="div-spacing">
+                    <input type="text" id="user" name='user' placeholder="Username" class="form-input" required />
+                </div>
+
+                <div class="div-spacing">
+                    <input type="text" id="first_name" name="first_name" placeholder="First Name" class="form-input" required />
+                </div>
+
+                <div class="div-spacing">
+                    <input type="text" id="last_Name" name="last_name" placeholder="Last Name" class="form-input" required />
+                </div>
+
+                <div class="div-spacing">
+                    <input type="number" id="zipCode" name="zip" placeholder="Zip Code" class="form-input" required />
+                </div>
+
+                <div class="div-spacing">
+                    <input type="email" id="email" name="mail" placeholder="Email" class="form-input" required />
+                </div>
+
+                <div class="div-spacing">
+                    <input type="password" id="password" name="password" placeholder="Password" class="form-input" required />
+                </div>
+
+                                <div class="div-spacing">
+                    <input type="text" id="address" name="address" placeholder="Address" class="form-input" required />
+                </div>
+                <div class="div-spacing">
+                    <input type="number" id="phone" name= "phone" placeholder="Phone Number" class="form-input" required />
+                </div>
+                                <div class="div-spacing">
+                    <input type="text" id="balance" name= "balance" placeholder="Initial deposit amount (optional)" class="form-input" />
+                </div>
+                <div class="center">
+                    <button class="center" type="submit" >
+                            Submit
+                    </button>
+                </div>
+            </div>
+        </form>
+    </body>
+</html>

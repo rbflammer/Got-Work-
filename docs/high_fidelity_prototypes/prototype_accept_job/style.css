@@ -1,0 +1,25 @@
+.available-jobs {
+
+}
+
+.current-jobs {
+
+}
+
+.available-jobs__header {
+
+}
+
+.available-job__div {
+    border: solid;
+    border-color: black;
+    margin: 5px;
+    pading: 5px;
+}
+
+.current-job__div {
+    border: solid;
+    border-color: grey;
+    margin: 5px;
+    padding: 5px;
+}

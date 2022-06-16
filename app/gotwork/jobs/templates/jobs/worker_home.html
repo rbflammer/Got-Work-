@@ -1,0 +1,125 @@
+{% load static %}
+
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>Worker Home</title>
+    <link rel="shortcut icon" type="image/ico" href="{% static 'favicon.ico' %}"/>
+    <link rel="stylesheet" href="{% static 'jobs/user_home_style.css' %}">
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div class="topbar">
+            <span id="profile-icon">
+                O-|-<
+            </span>
+            <span id="profile-name">
+                {{ worker.first_name }} {{ worker.last_name }}
+            </span>
+            <form action="{% url 'jobs:logout' %}" method="post">
+                {% csrf_token %}
+                <input type="submit" class="logout-button" name="logout" id="logout" value="Logout">
+            </form>
+            <form action="{% url 'jobs:workerSettings' worker.id %}" method="get">
+                <input type="submit" class="settings-button" name="workersettings" 
+                    id="settings-button" value="Profile Settings" onclick="profileSettings(this)">
+            </form>
+
+        </div>
+        <div class="sidebar">
+            <h2>Account info:</h2>
+            <p>Current Funds: {{ worker.balance|floatformat:2 }}</p>
+        </div>
+        <div class="main">
+            {% if disputed_jobs.count != 0 %}
+                <div class="disputed-jobs">
+                <h2>Disputed Jobs:</h2>
+                <p>The following jobs have been disputed by the client. Please contact the client to find out why.</p>
+                {% for job in disputed_jobs %}
+                    <div class="job-detail">
+                        <p>Type: {{ job.jobType }}</p>
+                        <p onclick="showAddress(this)"> Location: {{ job.zipCode }}</p>
+                        <p>Pay: ${{ job.price|floatformat:2 }}</p>
+                        <p>Worker: {{ job.worker }}</p>
+                        <p>Worker Contact: {{ job.worker.contact }}</p>
+                        <p>Status: {{ job.status }}</p>
+                        <p>Date: {{ job.getDueDatePretty }}</p>
+                    </div>
+                {% endfor %}
+                </div>
+            {% endif %}
+            <div class="current-jobs">
+                <h2>Current Jobs:</h2>
+                <!--loop each current job-->
+                {% for job in active_jobs %}
+                    <div class="job-detail">
+                        <form>
+                        {% csrf_token %}
+                            <p>Type: {{ job.jobType }}</p>
+                            <p onclick="showAddress(this)">Location: {{ job.customer.zipCode }}</p>
+                            <p>Pay: ${{ job.price|floatformat:2 }}</p>
+                            <p>Status: {{ job.status }}</p>
+                            <p>Date: {{ job.getDueDatePretty }}</p>
+                            <p>Customer Contact: {{ job.customer.email }}</p>
+                            <input type="button" name="finished" 
+                            class="job-button" id="finished-button" value="Finished!"
+                            @click="showPopup()">
+                        </form>
+                    </div>
+                    <div id="modal" class="modal">
+                        <div class="modal-content">
+                            <span class="close" @click="closePopup()">&times;</span>
+                            <form action="{% url 'jobs:finishJob' job.id %}" method="post">
+                            {% csrf_token %}
+                                <p style="font-size: 20px;">How did the job go?</p>
+                                <label class="thumbs-up">
+                                    <input type="radio" name="review" value="up" required>
+                                    <span class="thumbs">👍</span>
+                                </label>
+                                <label class="thumbs-down">
+                                    <input type="radio" name="review" value="down" required>
+                                    <span class="thumbs">👎</span>
+                                </label>
+        
+                                <p style="font-size: 20px; padding-top: 50px;">How long did the job take to complete (in hours)?</p>
+                                <input type="number" name="timetaken" id="timetaken" min="0" placeholder="Hours" required />
+        
+                                <br>
+                                <input type="submit" name="finishedreview" class="job-button" id="finishedreview" value="Submit"/>
+                            </form>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="job-detail">
+                        <p>You are't currently working any jobs.</p>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="available-jobs">
+                <h2>Available Jobs:</h2>
+                {% for job in available_jobs %}
+                    <div class="job-detail">
+                        <form action="{% url 'jobs:acceptJob' job.id worker.id %}" method="post">
+                            {% csrf_token %}
+                            <p>Type: {{ job.jobType }}</p> 
+                            <p onclick="showAddress(this)">Location: {{ job.zipCode }}</p>
+                            <p>Pay: ${{ job.price|floatformat:2 }}</p> 
+                            <p>Status: {{ job.status }}</p>
+                            <p>Date: {{ job.getDueDatePretty }}</p>
+                            <input type="submit" name="accept" class="job-button"
+                            id="accept-button" value="Accept Job" onclick="acceptJob(this)">
+                        </form>
+                    </div>
+                {% empty %}
+                <div class="job-detail">
+                    <p>There aren't any available jobs at the moment. Please check again later.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="{% static 'jobs/js/worker_home.js' %}"></script>
+</body>
+<html>

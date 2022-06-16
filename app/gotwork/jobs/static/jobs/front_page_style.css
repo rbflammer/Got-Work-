@@ -1,0 +1,56 @@
+.header {
+    margin-top: -1%;
+    font-size: 60px;
+}
+
+.tagline {
+    margin-top: -5%;
+    font-size: 45px;
+}
+
+.other-text {
+    margin-top: -1.5%;
+}
+
+.center {
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+
+.background {
+    background: linear-gradient(45deg, #49D49D 10%, #A2C7E5 90%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.sign-up {
+    padding: 30px;
+    padding-top: 34px;
+}
+
+.login {
+    padding: 50px;
+    margin-top: 5%;
+}
+
+.form-input {
+    padding: 10px;
+    border-radius: 5%;
+}
+
+.form-spacing {
+    padding-top: 10px;
+}
+
+button {
+    background: linear-gradient(90deg, rgb(116, 214, 231) 0%, rgb(70, 194, 211) 100%);
+    border-radius: 10%;
+    width: 100px;
+    border-color: black;
+    border-width: 2.5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 17px;
+    font-weight: bold;
+}

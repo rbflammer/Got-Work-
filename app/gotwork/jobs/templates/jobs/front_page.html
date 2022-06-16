@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <link rel="stylesheet" href="{% static 'jobs/front_page_style.css' %}" type="text/css" >
+        <title>Got Work?</title>
+        <link rel="shortcut icon" type="image/ico" href="{% static 'favicon.ico' %}"/>
+    </head>
+
+    <body class="background">
+        <script src="{% static 'jobs/js/front_page.js' %}"></script>
+
+        <div>
+            <header class="header center">
+                <h1>Got Work?</h1>
+            </header>
+            <div class="center" style="padding: 10px;"></div>
+            <h2 class="tagline center">We Do, So You Don't Have To</h2>
+        </div>
+
+        <div class="sign-up">
+            <h2 class="other-text center" style="font-size: 32px;">Click Below To Create An Account</h2>
+            <div class="center">
+                <button class="center">
+                    <a href="{% url 'jobs:genericSignUp' %}" style="text-decoration: none; color: black;">
+                        Sign Up
+                    </a>
+                </button>
+            </div>
+        </div>
+
+        <div class="login">
+            <h2 class="other-text center" style="font-size: 32px;">Already Have An Account? Sign In Below</h2>
+            <form action="{% url 'jobs:logIn' %}" method="post">
+                {% csrf_token %}
+                <div class="form-spacing center">
+                    <input type="text" id="username" name="username" placeholder="Username" class="form-input" />
+                </div>
+
+                <div class="form-spacing center">
+                    <input type="password" id="password" name="password" placeholder="Password" class="form-input" />
+                </div>
+
+                <div class="center" style="padding: 15px; padding-bottom: 150px;">
+                    <button class="center" type="submit">Login</button>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

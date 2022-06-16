@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <link rel="stylesheet" href="{% static 'jobs/generic_sign_up_style.css' %}" type="text/css" >
+        <title>Worker Sign Up</title>
+        <link rel="shortcut icon" type="image/ico" href="{% static 'favicon.ico' %}"/>
+    </head>
+
+    <body class="background">
+        <script src="{% static 'jobs/js/worker_sign_up.js' %}"></script>
+        <header class="header">
+            <h1 class="please-enter">Enter your information below:</h1>
+        </header>
+
+        <form action="{% url 'jobs:createWorker' %}" method="post">
+            {% csrf_token %}
+            <div class="inputs">
+                <div class="div-spacing">
+                    <input type="text" id="user" name='user' placeholder="Username" class="form-input" required />
+                </div>
+
+                <div class="div-spacing">
+                    <input type="text" id="first_name" name="first_name" placeholder="First Name" class="form-input" required />
+                </div>
+
+                <div class="div-spacing">
+                    <input type="text" id="last_Name" name="last_name" placeholder="Last Name" class="form-input" required />
+                </div>
+
+                <div class="div-spacing">
+                    <input type="number" id="zipCode" name="zip" placeholder="Zip Code" class="form-input" required />
+                </div>
+
+                <div class="div-spacing">
+                    <input type="email" id="email" name="mail" placeholder="Email" class="form-input" required />
+                </div>
+
+                <div class="div-spacing">
+                    <input type="password" id="password" name="password" placeholder="Password" class="form-input" required />
+                </div>
+                <div class="div-spacing">
+                    <input type=number id="distance" name="distance" placeholder="Miles Away You're Willing to Travel" class="form-input" required />
+                </div>
+
+                <div class="div-spacing">
+                    <h2>Enter the time you are available to start work: </h2>
+                   <input type="time" name="starttime" id="starttime" required />
+                </div>
+                <div class="div-spacing">
+                    <h2>Enter what time you would like to end work: </h2>
+                    <input type="time" name="endtime" id="endtime" required />
+                </div>
+
+                <div class="center">
+                    <button class="center" type="submit">
+                            Submit
+                    </button>
+                </div>
+            </div>
+        </form>
+    </body>
+</html>

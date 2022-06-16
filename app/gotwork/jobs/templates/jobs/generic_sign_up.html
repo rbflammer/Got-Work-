@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <link rel="stylesheet" href="{% static 'jobs/generic_sign_up_style.css' %}" type="text/css" >
+        <title>Sign Up</title>
+        <link rel="shortcut icon" type="image/ico" href="{% static 'favicon.ico' %}"/>
+    </head>
+
+    <body class="background">
+        <script src="{% static 'jobs/js/generic_sign_up.js' %}"></script>
+
+        <header class="header">
+<!--            <h1 class="please-enter">Please Enter Your Information</h1>-->
+        </header>
+        
+        <form>
+            <div class="inputs">
+
+                <h3>I Want To Be A...</h3>
+                <div class="form-input font white role">
+                    <input type="radio" id="customer" name="role" value="Customer"/>
+                    <label for="customer"> Customer </label>
+                </div>
+                <div class="form-input font white role">
+                    <input type="radio" id="worker" name="role" value="Worker"  />
+                    <label for="worker"> Worker </label>
+                </div>
+            
+                <button class="font" type="button" onclick="storeData()">
+                    Next
+                </button>
+            </div>
+        </form>
+    </body>
+</html>

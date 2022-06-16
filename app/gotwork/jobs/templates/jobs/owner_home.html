@@ -1,0 +1,69 @@
+{% load static %}
+
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>Owner Home</title>
+    <link rel="shortcut icon" type="image/ico" href="{% static 'favicon.ico' %}"/>
+    <link rel="stylesheet" href="{% static 'jobs/user_home_style.css' %}">
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div class="topbar">
+            <span id="profile-icon">
+                O-|-<
+            </span>
+            <span id="profile-name">
+                {{ owner.first_name }} {{ owner.last_name }}
+            </span>
+            <form action="{% url 'jobs:logout' %}" method="post">
+                {% csrf_token %}
+                <input type="submit" class="logout-button" name="logout" id="logout" value="Logout">
+            </form>
+            <form action="{% url 'jobs:ownerSettings' owner.id %}" method="get">
+                <input type="submit" class="settings-button" name="ownersettings" 
+                    id="settings-button" value="Profile Settings" onclick="profileSettings(this)">
+            </form>
+            <form action="{% url 'jobs:createJobType' owner.id %}" method="get">
+                <input type="submit" class="create-job-type-button" id="create-job-type-button"
+                value="Create New Job Type" name="createjobtype">
+            </form>
+        </div>
+        <div class="sidebar">
+            <h2>Account info:</h2>
+            <p>Current Funds: {{ owner.balance|floatformat:2 }}</p>
+        </div>
+        <div class="main">
+            {% if message != " " %}
+                <p class="error-message"> {{message}} </p>
+            {% endif %}
+            <div class="current-jobs">
+                <h2>Current Refund Requests:</h2>
+                <!-- loop each refund request -->
+                {% for request in refund_requests %}
+                    <form class="job-detail" action="{% url 'jobs:approveDenyRequest' request.id owner.id %}" method="post">
+                        {% csrf_token %}
+                        <p>Refund Price: ${{ request.job.price|floatformat:2 }}</p>
+                        <p>Customer: {{ request.job.customer.first_name }} {{ request.job.customer.last_name }}</p>
+                        <p>Worker: {{ request.job.worker.first_name }} {{ request.job.worker.last_name }}</p>
+                        <p>Request Reason: {{ request.description }}</p>
+                        <input type="submit" name="finished" 
+                        class="job-button" id="finished-button" value="Accept"
+                        @click="acceptRequest(this)">
+                        <input type="submit" name="finished" 
+                        class="job-button" id="finished-button" value="Deny"
+                        @click="denyRequest(this)">
+                    </form>
+                {% empty %}
+                    <div class="job-detail">
+                        <p>There aren't currently any refund requests.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="{% static 'jobs/js/worker_home.js' %}"></script>
+</body>
+<html>

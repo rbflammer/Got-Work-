@@ -1,0 +1,17 @@
+Below are the usernames and passwords for models created by the migration in Django.
+For convenience, usernames equal passwords. Each section has a heading. Each line 
+is a username/password.
+
+Owners:
+owner
+
+Customers:
+Logan
+Boise
+Manhattan
+
+Workers:
+billyjoel
+Tommyboy
+sammy
+wolf

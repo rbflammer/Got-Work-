@@ -1,0 +1,90 @@
+/* reset */
+
+*{
+    margin:0;
+    padding:0;
+    text-decoration: none;
+}
+
+body {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #a8ebff;
+     
+}
+
+/* topbar */
+.topbar {
+    display: flex;
+    align-items: end;
+    justify-content: right;
+    width: 100%;
+}
+
+.topbar input[type=submit] {
+    padding: 0.3em;
+    margin: 0.5em;
+    margin-bottom: 0;
+    width: 15%;
+    min-width: 125px;
+    font-size: 14px;
+}
+
+/* end topbar*/
+/* settings */
+
+.form {
+    margin: 20px;
+    padding: 5px;
+    border: medium dashed grey;
+}
+
+h1 {
+    margin: 3px 5px 10px 25px;
+    margin-left: 25px;
+
+}
+
+.form-input {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.form label {
+    font-size: 16px;
+}
+
+.form input[type=text],
+.form input[type=number],
+.form input[type=email] {
+    padding: 0.75em;
+    width: 25%;
+    min-width: 250px;
+    font-size: 16px;
+}
+
+.form input[type=time] {
+    padding: 0.25em;
+    width: 10%;
+    min-width: 125px;
+    font-size: 16px;
+}
+
+.form .options input[type=checkbox] {
+    margin-left: 3em;
+    margin-right: 1em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.form input[type=submit] {
+    padding: 0.75em;
+    margin: 0.5em;
+    width: 10%;
+    min-width: 125px;
+    border: thick inset grey;
+}
+
+/* end settings */

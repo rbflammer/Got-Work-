@@ -1,0 +1,85 @@
+{% load static %}
+
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>Worker Settings</title>
+    <link rel="shortcut icon" type="image/ico" href="{% static 'favicon.ico' %}"/>
+    <link rel="stylesheet" href="{% static 'jobs/settings_style.css' %}">
+</head>
+
+<body>
+    <div class="topbar">
+        <form action="{% url 'jobs:workerHome' %}" method="get" class="back">
+            <input type=submit class="back-button" name="back" id="back" value="Back To Home">
+        </form>
+    </div>
+    <h1>Account Settings</h1>
+    <div class="user form">
+        <p>Edit your user settings here:</p>
+        <form action="{% url 'jobs:postWorkerSettings' user.id %}" method="post">
+        {% csrf_token %}
+        <div class="form-input text">
+            <label for="first_name">First Name: </label><br>
+            <input type="text" name="first_name" id="first_name" value="{{ user.first_name }}">
+        </div>
+        <div class="form-input text">
+            <label for="last_name">Last Name: </label><br>
+            <input type="text" name="last_name" id="last_name" value="{{ user.last_name }}">
+        </div>
+        <div class="form-input text">
+            <label for="email">Email: </label><br>
+            <input type="email" name="email" id="email" value="{{ user.email }}">
+        </div>
+        <div class="form-input number">
+            <label for="zip">Zip Code: </label><br>
+            <input type="number" name="zip" id="zip" value="{{ user.zipCode }}">
+        </div>
+        <div class="form-input number">
+            <label for="distance">Maximum Distance: </label><br>
+            <input type="number" name="distance" id="distance" value="{{ user.maximumTravelDistance }}">
+        </div>
+        <p> Times you are available to work:</p>
+        <div class="form-input time">
+            <label for="starttime">From </label>
+            <input type="time" name="starttime" id="starttime" value="{{ fromTime }}">
+
+            <label for="endtime">To </label>
+            <input type="time" name="endtime" id="endtime" value="{{ toTime }}">
+        </div>
+        <div class="form-input options">
+            <p class="jobTypes-label">Types of jobs you can work:</p>
+            {% for jobType in job_types %}
+                {% if jobType in user.jobTypes.all %}
+                    <input type="checkbox" name="{{ jobType }}" id="{{ jobType }}" checked>
+                    <label class="checkbox-label" for="{{ jobType }}">{{ jobType }}</label>
+                    <br>
+                {% else %}
+                    <input type="checkbox" name="{{ jobType }}" id="{{ jobType }}">
+                    <label for="{{ jobType }}">{{ jobType }}</label>
+                    <br>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="submit-button-div">
+            <input type="submit" name="submit" id="submit" class="submit">
+        </div>
+        </form>
+    </div>
+        <!--place for user to deposit or withdraw money-->
+    <div class="money form">
+        <p>Edit your financial settings here</p>
+        <form method="post">
+        {% csrf_token %}
+            <p>Account Total: {{ user.balance|floatformat:2 }}</p>
+            <label for="amount">Enter Amount: </label><br>
+            <input type=number name="amount" id="amount" step="0.01" min="0"><br>
+            <input formaction="{% url 'jobs:withdrawWorker' user.id %}" type=submit name="submit-withdraw" 
+                id="submit-withdraw" class="submit withdraw" value="Withdraw">
+            <input formaction="{% url 'jobs:depositWorker' user.id %}" type=submit name="submit-deposit" 
+                id="submit-deposit" class="submit deposit" value="Deposit">
+        </form>
+        <!--passwords? probably shouldn't just send over http, encryption of some kind?> -->
+    </div>
+</body>
+<html>
